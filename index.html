@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PC-Helfer – Grafikkarte, Prozessor und Spiele einfach vergleichen</title>
+<meta name="description" content="Antworten auf typische PC-Fragen in wenigen Klicks: Lohnt sich das Upgrade? Läuft das Spiel auf meinem PC? Bremst mein Prozessor die Grafikkarte? Passen die Teile zusammen? Kostenlos, ohne Anmeldung.">
+<style>
+:root{--bg:#f4f5f2;--card:#fff;--ink:#1b1c1a;--muted:#62645e;--line:#e0e2dc;--soft:#eef0eb;
+--accent:#2c5d9e;--accent-ink:#fff;--accent-soft:#e2eaf6;--ok:#2b7a30;--ok-soft:#e4f2e5;--warn:#9a5a00;--warn-soft:#fbefd9;--bad:#b0261f;--bad-soft:#fbe4e1}
+@media (prefers-color-scheme:dark){:root{--bg:#131412;--card:#1e1f1c;--ink:#ecede8;--muted:#a2a49d;--line:#343632;--soft:#282a26;
+--accent:#8fb3e8;--accent-ink:#0f1c2e;--accent-soft:#1d2a3d;--ok:#7cc480;--ok-soft:#1e331f;--warn:#e8b15d;--warn-soft:#382c17;--bad:#ef8a80;--bad-soft:#3b1e1b}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding:18px 16px 60px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+.brand{font-weight:700;font-size:1.05rem;display:flex;align-items:center;gap:6px;cursor:pointer;background:none;border:0;color:var(--ink);font-family:inherit;padding:0}
+.brand svg{width:22px;height:22px;color:var(--accent)}
+.back{background:none;border:0;color:var(--accent);font:inherit;font-weight:600;cursor:pointer;padding:6px 0}
+h1{font-size:1.6rem;line-height:1.2;margin:0 0 6px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 20px}
+.step{font-size:.85rem;color:var(--muted);margin-bottom:4px}
+h2{font-size:1.35rem;line-height:1.25;margin:0 0 14px}
+.qlist{display:flex;flex-direction:column;gap:10px}
+.q{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;font:inherit;color:inherit;cursor:pointer;text-decoration:none}
+.q:active,.pill:active{transform:scale(.98)}
+.q .ic{flex:0 0 46px;height:46px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center}
+.q .ic svg{width:26px;height:26px}
+.q b{display:block;font-size:1.05rem}
+.q span{display:block;color:var(--muted);font-size:.88rem}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:10px 16px;font:inherit;font-size:.95rem;cursor:pointer;min-height:46px}
+.pill.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.answer{margin-top:18px;border-radius:18px;padding:18px;background:var(--accent-soft)}
+.answer.ok{background:var(--ok-soft)}.answer.warn{background:var(--warn-soft)}.answer.bad{background:var(--bad-soft)}
+.answer .lbl{font-size:.8rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.answer .say{font-size:1.3rem;font-weight:700;line-height:1.3;margin:6px 0 8px}
+.answer .more{color:var(--ink);font-size:.95rem}
+.answer.ok .say{color:var(--ok)}.answer.warn .say{color:var(--warn)}.answer.bad .say{color:var(--bad)}
+.tips{margin:10px 0 0;padding-left:20px;font-size:.92rem}
+.tips li{margin:4px 0}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:12px;padding:11px 16px;font:inherit;font-weight:600;cursor:pointer;min-height:46px}
+.btn.ghost{background:transparent;color:var(--accent)}
+.msg{font-size:.88rem;color:var(--ok);align-self:center}
+details.fine{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
+details.fine summary{cursor:pointer;color:var(--accent);font-weight:600;list-style:none}
+details.fine summary::before{content:"⚙ "}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.field{display:block}
+.field span{display:block;font-size:.82rem;color:var(--muted);margin-bottom:4px}
+input[type=number],select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;height:48px;width:100%}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.formula{font-size:.85rem;color:var(--muted);margin-top:10px;line-height:1.45}
+.hint{font-size:.85rem;color:var(--muted);margin:8px 0 0}
+.bars{margin:16px 0 4px;display:flex;flex-direction:column;gap:8px}
+.bar{font-size:.85rem}
+.bar .track{height:14px;border-radius:7px;background:var(--soft);overflow:hidden;margin-top:3px}
+.bar .fill{height:100%;border-radius:7px;background:var(--accent)}
+.bar .fill.alt{background:var(--muted)}
+.checks{list-style:none;padding:0;margin:10px 0 0}
+.checks li{display:flex;gap:8px;align-items:flex-start;margin:6px 0;font-size:.95rem}
+.checks .i{flex:0 0 22px;font-weight:700}
+.hide{display:none!important}
+footer{margin-top:28px;font-size:.8rem;color:var(--muted);text-align:center;line-height:1.5}
+footer a{color:var(--accent)}
+.gap{height:18px}
+</style>
+<script data-goatcounter="https://schrauberbits.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <button class="brand" id="home" aria-label="Zur Startseite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>PC-Helfer</button>
+    <button class="back hide" id="back">← Andere Frage</button>
+  </div>
+  <main id="app"></main>
+  <footer>Richtwerte ohne Gewähr: Leistungswerte sind gemittelt aus Testberichten (WQHD, ohne Raytracing) und können je Spiel um etwa 10–20 % abweichen. Stand der Daten: November 2026.<br>Kostenlos, ohne Anmeldung, ohne Werbung – ein Hobbyprojekt.<br>Mehr Helfer: <a href="https://schrauberbits.github.io/watt-helfer/">Watt-Helfer</a> · <a href="https://schrauberbits.github.io/heiz-helfer/">Heiz-Helfer</a></footer>
+</div>
+
+<script>
+// ================= Grundlagen =================
+const app=document.getElementById('app');
+const fmt=(n,d=0)=>Number(n).toLocaleString('de-DE',{minimumFractionDigits:d,maximumFractionDigits:d});
+const num=v=>{const n=parseFloat(String(v).replace(',','.'));return isFinite(n)?n:0};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const h=(html)=>{app.innerHTML=html;window.scrollTo(0,0)};
+const pct=x=>(x>=0?'+':'−')+fmt(Math.abs(x)*100)+' %';
+
+// Nutzung zählen (eigene Namen mit "pc-", damit sie sich nicht mit dem Watt-Helfer mischen)
+const gezaehlt={}; let interagiert=false;
+app.addEventListener('click',()=>{interagiert=true},true); app.addEventListener('input',()=>{interagiert=true},true); app.addEventListener('change',()=>{interagiert=true},true);
+function senden(path,title,versuch){
+  try{ if(window.goatcounter&&window.goatcounter.count){ window.goatcounter.count({path,title,event:true}); return; } }catch(e){ return; }
+  if(versuch<40) setTimeout(()=>senden(path,title,versuch+1),250);
+}
+function zaehle(name,art){ art=art||'antwort'; if(art==='antwort'&&!interagiert&&name!=='kopiert') return;
+  const key='pc-'+art+'-'+name; if(gezaehlt[key]) return; gezaehlt[key]=1; senden(key,'PC-Helfer '+(art==='aufruf'?'Aufruf: ':'Antwort: ')+name,0); }
+
+async function kopieren(text,el){
+  try{await navigator.clipboard.writeText(text);el.textContent='Kopiert ✓';}catch(e){el.textContent='Bitte Text markieren und kopieren.';}
+  zaehle('kopiert'); setTimeout(()=>{el.textContent=''},2500);
+}
+function antwortBox(cls,label,say,more,tips,copyText,formel,extra){
+  return `<div class="answer ${cls}"><div class="lbl">${label}</div><div class="say">${say}</div>${more?`<div class="more">${more}</div>`:''}
+  ${extra||''}
+  ${tips&&tips.length?`<ul class="tips">${tips.map(t=>`<li>${t}</li>`).join('')}</ul>`:''}
+  ${formel?`<div class="formula">${formel}</div>`:''}
+  <div class="actions"><button class="btn ghost" data-copy>Antwort kopieren</button><span class="msg" data-msg></span></div>
+  <textarea class="hide" data-text>${esc(copyText)}</textarea></div>`;
+}
+app.addEventListener('click',e=>{const b=e.target.closest('[data-copy]');if(!b)return;const box=b.closest('.answer');kopieren(box.querySelector('[data-text]').value,box.querySelector('[data-msg]'));});
+function balken(rows){ // rows: [label, wert, max, alt]
+  return `<div class="bars">${rows.map(r=>`<div class="bar">${esc(r[0])} <b>${fmt(r[1])}</b><div class="track"><div class="fill${r[3]?' alt':''}" style="width:${Math.max(2,Math.min(100,r[1]/r[2]*100))}%"></div></div></div>`).join('')}</div>`;
+}
+
+// ================= Daten =================
+// Grafikkarten: [Name, Leistungsindex (RTX 4070 = 100, WQHD ohne Raytracing, gemittelt), Grafikspeicher in GB]
+const GPUS=[
+ ['NVIDIA',[
+  ['GTX 1050 Ti',18,4],['GTX 1060 6 GB',30,6],['GTX 1070',38,8],['GTX 1080',47,8],['GTX 1080 Ti',60,11],
+  ['GTX 1650',24,4],['GTX 1660 / Super / Ti',37,6],
+  ['RTX 2060',45,6],['RTX 2060 Super',52,8],['RTX 2070',55,8],['RTX 2070 Super',61,8],['RTX 2080',64,8],['RTX 2080 Super',68,8],['RTX 2080 Ti',77,11],
+  ['RTX 3050',36,8],['RTX 3060 (12 GB)',55,12],['RTX 3060 Ti',69,8],['RTX 3070',77,8],['RTX 3070 Ti',82,8],['RTX 3080 (10 GB)',94,10],['RTX 3080 Ti',103,12],['RTX 3090',106,24],['RTX 3090 Ti',115,24],
+  ['RTX 4060',60,8],['RTX 4060 Ti (8 GB)',72,8],['RTX 4060 Ti (16 GB)',73,16],['RTX 4070',100,12],['RTX 4070 Super',115,12],['RTX 4070 Ti',122,12],['RTX 4070 Ti Super',132,16],['RTX 4080',150,16],['RTX 4080 Super',153,16],['RTX 4090',195,24],
+  ['RTX 5050',55,8],['RTX 5060',70,8],['RTX 5060 Ti (8 GB)',81,8],['RTX 5060 Ti (16 GB)',83,16],['RTX 5070',118,12],['RTX 5070 Ti',155,16],['RTX 5080',172,16],['RTX 5090',245,32]]],
+ ['AMD',[
+  ['RX 570',27,4],['RX 580',32,8],['RX 5500 XT',33,8],['RX 5600 XT',50,6],['RX 5700',55,8],['RX 5700 XT',60,8],
+  ['RX 6500 XT',24,4],['RX 6600',54,8],['RX 6600 XT',62,8],['RX 6650 XT',65,8],['RX 6700 XT',78,12],['RX 6750 XT',82,12],['RX 6800',92,16],['RX 6800 XT',106,16],['RX 6900 XT',113,16],['RX 6950 XT',120,16],
+  ['RX 7600',63,8],['RX 7600 XT',66,16],['RX 7700 XT',90,12],['RX 7800 XT',112,16],['RX 7900 GRE',120,16],['RX 7900 XT',140,20],['RX 7900 XTX',160,24],
+  ['RX 9060 XT (8 GB)',83,8],['RX 9060 XT (16 GB)',85,16],['RX 9070',135,16],['RX 9070 XT',152,16]]],
+ ['Intel',[['Arc A580',52,8],['Arc A750',58,8],['Arc A770',63,16],['Arc B570',63,10],['Arc B580',72,12]]]
+];
+const GPU=[]; GPUS.forEach(([m,l])=>l.forEach(g=>GPU.push({hersteller:m,name:g[0],idx:g[1],vram:g[2]})));
+const gpuOpts=(sel,leer)=>(leer?`<option value="-1">${leer}</option>`:'')+GPUS.map(([m,l])=>`<optgroup label="${m}">${l.map(g=>{const i=GPU.findIndex(x=>x.name===g[0]);return `<option value="${i}"${i===sel?' selected':''}>${g[0]}</option>`}).join('')}</optgroup>`).join('');
+
+// Prozessoren: [Name, Spiele-Index (Ryzen 7 7800X3D = 100, gemittelt), Sockel, Generation]
+const CPUS=[
+ ['Intel',[
+  ['Core i5-9400F',47,'LGA1151','i9'],['Core i7-8700K / 9700K',55,'LGA1151','i9'],['Core i5-10400F',52,'LGA1200','i10'],['Core i7-10700K',60,'LGA1200','i10'],['Core i5-11400F',58,'LGA1200','i11'],
+  ['Core i3-12100F',58,'LGA1700','i12'],['Core i5-12400F',68,'LGA1700','i12'],['Core i5-12600K',78,'LGA1700','i12'],['Core i7-12700K',82,'LGA1700','i12'],
+  ['Core i5-13400F / 14400F',72,'LGA1700','i13'],['Core i5-13600K / 14600K',86,'LGA1700','i13'],['Core i7-13700K / 14700K',92,'LGA1700','i13'],['Core i9-13900K / 14900K',96,'LGA1700','i13'],
+  ['Core Ultra 5 245K',80,'LGA1851','u2'],['Core Ultra 7 265K',86,'LGA1851','u2'],['Core Ultra 9 285K',90,'LGA1851','u2']]],
+ ['AMD',[
+  ['Ryzen 5 2600',40,'AM4','r2'],['Ryzen 5 3600',50,'AM4','r3'],['Ryzen 7 3700X',54,'AM4','r3'],
+  ['Ryzen 5 5500',58,'AM4','r5'],['Ryzen 5 5600 / 5600X',66,'AM4','r5'],['Ryzen 7 5700X / 5800X',69,'AM4','r5'],['Ryzen 7 5700X3D',78,'AM4','r5'],['Ryzen 7 5800X3D',82,'AM4','r5'],
+  ['Ryzen 5 7600 / 7600X',80,'AM5','r7'],['Ryzen 7 7700 / 7700X',84,'AM5','r7'],['Ryzen 7 7800X3D',100,'AM5','r7'],['Ryzen 9 7950X3D',100,'AM5','r7'],
+  ['Ryzen 5 9600X',85,'AM5','r9'],['Ryzen 7 9700X',88,'AM5','r9'],['Ryzen 7 9800X3D',112,'AM5','r9'],['Ryzen 9 9950X',92,'AM5','r9'],['Ryzen 9 9950X3D',111,'AM5','r9']]]
+];
+const CPU=[]; CPUS.forEach(([m,l])=>l.forEach(c=>CPU.push({hersteller:m,name:c[0],idx:c[1],sockel:c[2],gen:c[3]})));
+const cpuOpts=(sel,leer)=>(leer?`<option value="-1">${leer}</option>`:'')+CPUS.map(([m,l])=>`<optgroup label="${m}">${l.map(c=>{const i=CPU.findIndex(x=>x.name===c[0]);return `<option value="${i}"${i===sel?' selected':''}>${c[0]}</option>`}).join('')}</optgroup>`).join('');
+
+// Mainboard-Chipsätze: [Name, Sockel, Arbeitsspeicher, Serie]
+const BOARDS=[
+ ['AMD Sockel AM4',[['A320','AM4','DDR4','300'],['B350','AM4','DDR4','300'],['X370','AM4','DDR4','300'],['B450','AM4','DDR4','400'],['X470','AM4','DDR4','400'],['A520','AM4','DDR4','500'],['B550','AM4','DDR4','500'],['X570','AM4','DDR4','500']]],
+ ['AMD Sockel AM5',[['A620','AM5','DDR5','600'],['B650 / B650E','AM5','DDR5','600'],['X670 / X670E','AM5','DDR5','600'],['B850','AM5','DDR5','800'],['X870 / X870E','AM5','DDR5','800']]],
+ ['Intel Sockel 1700',[['H610','LGA1700','beides','600'],['B660','LGA1700','beides','600'],['H670','LGA1700','beides','600'],['Z690','LGA1700','beides','600'],['B760','LGA1700','beides','700'],['Z790','LGA1700','beides','700']]],
+ ['Intel Sockel 1851',[['B860','LGA1851','DDR5','800'],['Z890','LGA1851','DDR5','800']]],
+ ['Intel Sockel 1200',[['H410','LGA1200','DDR4','400'],['B460','LGA1200','DDR4','400'],['Z490','LGA1200','DDR4','400'],['H510','LGA1200','DDR4','500'],['B560','LGA1200','DDR4','500'],['Z590','LGA1200','DDR4','500']]],
+ ['Intel Sockel 1151 (8./9. Gen.)',[['B360','LGA1151','DDR4','300'],['H370','LGA1151','DDR4','300'],['Z370','LGA1151','DDR4','300'],['Z390','LGA1151','DDR4','300']]]
+];
+const BOARD=[]; BOARDS.forEach(([g,l])=>l.forEach(b=>BOARD.push({gruppe:g,name:b[0],sockel:b[1],ram:b[2],serie:b[3]})));
+const boardOpts=sel=>`<option value="-1">Bitte wählen</option>`+BOARDS.map(([g,l])=>`<optgroup label="${g}">${l.map(b=>{const i=BOARD.findIndex(x=>x.name===b[0]&&x.sockel===b[1]);return `<option value="${i}"${i===sel?' selected':''}>${b[0]}</option>`}).join('')}</optgroup>`).join('');
+const CPU_RAM={AM4:'DDR4',AM5:'DDR5',LGA1851:'DDR5',LGA1200:'DDR4',LGA1151:'DDR4',LGA1700:'beides'};
+
+const gi=n=>GPU.findIndex(g=>g.name===n), ci=n=>CPU.findIndex(c=>c.name===n);
+
+const ICON={
+ upgrade:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5M5 12l7-7 7 7"/><path d="M4 21h16"/></svg>',
+ spiel:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 11v3M5.5 12.5h3"/><circle cx="16" cy="11.5" r="1" fill="currentColor"/><circle cx="18" cy="13.5" r="1" fill="currentColor"/></svg>',
+ engpass:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h7l2 6 2-6h7M3 18h7l2-6 2 6h7"/></svg>',
+ kompatibel:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v4M15 3v4M7 7h10v4a5 5 0 0 1-10 0z"/><path d="M12 16v5"/></svg>',
+ netzteil:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>'
+};
+
+// ================= Startseite =================
+const FRAGEN=[
+ ['upgrade','Lohnt sich die neue Grafikkarte?','Wie viel schneller als meine jetzige'],
+ ['spiel','Läuft das Spiel auf meinem PC?','Mit den Anforderungen von Steam vergleichen'],
+ ['engpass','Bremst mein Prozessor die Grafikkarte?','Der „Bottleneck“-Check'],
+ ['kompatibel','Passen die Teile zusammen?','Prozessor, Mainboard, Arbeitsspeicher, Gehäuse']
+];
+function start(){
+  h(`<h1>Was möchtest du wissen?</h1><p class="sub">Tippe eine Frage an – die Antwort kommt in wenigen Schritten.</p>
+  <div class="qlist">${FRAGEN.map(f=>`<button class="q" data-go="${f[0]}"><span class="ic">${ICON[f[0]]}</span><span><b>${f[1]}</b><span>${f[2]}</span></span></button>`).join('')}
+  <a class="q" href="https://schrauberbits.github.io/watt-helfer/#netzteil"><span class="ic">${ICON.netzteil}</span><span><b>Reicht mein Netzteil?</b><span>Im Watt-Helfer nachrechnen ↗</span></span></a></div>`);
+}
+app.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b) location.hash=b.dataset.go;});
+
+const AUFL=[['1080','Full HD'],['1440','WQHD'],['2160','4K']];
+const AUFL_F={'1080':1.0,'1440':1.45,'2160':2.3}; // wie stark die Grafikkarte je Auflösung mehr arbeiten muss (Faustwert)
+const auflPills=(id,sel)=>`<div class="pills" id="${id}">${AUFL.map(a=>`<button class="pill${a[0]===sel?' on':''}" data-v="${a[0]}">${a[1]}</button>`).join('')}</div>`;
+function pillGroup(id,cb){document.getElementById(id).addEventListener('click',e=>{const b=e.target.closest('.pill');if(!b)return;b.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',p===b));cb(b.dataset.v);});}
+
+// Engpass-Einschätzung, auch von anderen Seiten genutzt
+function engpassWert(g,c,aufl){ return g.idx/(c.idx*AUFL_F[aufl]); }
+
+// ================= 1) Upgrade =================
+const U={alt:gi('RTX 3060 (12 GB)'),neu:gi('RTX 5070'),cpu:-1,aufl:'1440',fps:0};
+function upgrade(){
+  h(`<h2>Lohnt sich die neue Grafikkarte?</h2>
+  <label class="field"><span>1. Welche Grafikkarte hast du jetzt?</span><select id="ua">${gpuOpts(U.alt)}</select></label>
+  <div class="gap"></div>
+  <label class="field"><span>2. Welche möchtest du kaufen?</span><select id="un">${gpuOpts(U.neu)}</select></label>
+  <div class="gap"></div>
+  <div class="step">3. In welcher Auflösung spielst du?</div>${auflPills('uau',U.aufl)}
+  <div id="ures"></div>
+  <details class="fine"><summary>Genauer einstellen</summary>
+   <div class="fields">
+    <label class="field" style="grid-column:1/-1"><span>Dein Prozessor (für den Engpass-Hinweis)</span><select id="uc">${cpuOpts(U.cpu,'Weiß ich nicht')}</select></label>
+    <label class="field"><span>Deine FPS jetzt in einem Spiel</span><input type="number" id="uf" inputmode="numeric" min="0" placeholder="z. B. 50" value="${U.fps||''}"></label>
+   </div><p class="hint">Mit FPS schätzt der Helfer, wie viele Bilder pro Sekunde es mit der neuen Karte etwa werden.</p></details>`);
+  ua.onchange=()=>{U.alt=+ua.value;uupd()}; un.onchange=()=>{U.neu=+un.value;uupd()}; uc.onchange=()=>{U.cpu=+uc.value;uupd()};
+  uf.addEventListener('input',()=>{U.fps=num(uf.value);uupd()}); pillGroup('uau',v=>{U.aufl=v;uupd()}); uupd();
+}
+function uupd(){
+  const a=GPU[U.alt], n=GPU[U.neu], g=n.idx/a.idx-1;
+  let cls,say;
+  if(g<0){cls='bad';say=`Nein – die ${esc(n.name)} ist etwa ${fmt(-g*100)} % langsamer.`;}
+  else if(g<0.15){cls='warn';say=`Kaum spürbar: nur etwa ${pct(g)}.`;}
+  else if(g<0.4){cls='';say=`Spürbar: die ${esc(n.name)} ist etwa ${fmt(g*100)} % schneller.`;}
+  else if(g<0.8){cls='ok';say=`Deutlich: etwa ${fmt(g*100)} % mehr Leistung.`;}
+  else {cls='ok';say=`Riesiger Sprung: etwa ${fmt(n.idx/a.idx,1)}-mal so schnell.`;}
+  const tips=[], warn=[];
+  if(n.vram<a.vram) tips.push(`Achtung: Die neue Karte hat weniger Grafikspeicher (${n.vram} GB statt ${a.vram} GB).`);
+  if(n.vram<=8&&U.aufl!=='1080') tips.push(`${n.vram} GB Grafikspeicher werden in ${U.aufl==='1440'?'WQHD':'4K'} bei neuen Spielen oft knapp – dann helfen nur niedrigere Texturen. 12–16 GB sind für die nächsten Jahre sicherer.`);
+  else if(n.vram<=8) tips.push(`${n.vram} GB Grafikspeicher reichen in Full HD meist noch, bei sehr neuen Spielen aber nicht immer für hohe Texturen.`);
+  let eng='';
+  if(U.cpu>=0){const c=CPU[U.cpu], x=engpassWert(n,c,U.aufl);
+    if(x>1.35){tips.unshift(`Dein ${esc(c.name)} wird die ${esc(n.name)} in ${U.aufl==='2160'?'4K':U.aufl==='1440'?'WQHD':'Full HD'} deutlich ausbremsen – ein Teil des Plus kommt dann nicht an.`);eng=` Hinweis: Der ${c.name} bremst die neue Karte deutlich aus.`;}
+    else if(x>1.0){tips.unshift(`Dein ${esc(c.name)} bremst die ${esc(n.name)} in prozessorlastigen Spielen etwas aus.`);eng=` Hinweis: Der ${c.name} bremst die neue Karte in manchen Spielen etwas aus.`;}
+  }
+  let fpsTxt='',fpsCopy='';
+  if(U.fps>0){const f=U.fps*n.idx/a.idx; fpsTxt=` Aus deinen <b>${fmt(U.fps)} FPS</b> werden etwa <b>${fmt(f)} FPS</b>, wenn die Grafikkarte der Engpass ist.`; fpsCopy=` Aus ${fmt(U.fps)} FPS werden etwa ${fmt(f)} FPS (wenn die Grafikkarte der Engpass ist).`;}
+  const more=`Leistungsindex ${fmt(a.idx)} → ${fmt(n.idx)} (RTX 4070 = 100), also ${pct(g)}.${fpsTxt}`;
+  const copy=`Upgrade-Check: ${a.name} → ${n.name} = etwa ${pct(g)} Leistung (gemittelter Index ${a.idx} → ${n.idx}, WQHD ohne Raytracing). Grafikspeicher ${a.vram} GB → ${n.vram} GB.${fpsCopy}${eng}`;
+  ures.innerHTML=antwortBox(cls,'Antwort',say,more,tips,copy,'Gerechnet mit gemittelten Testergebnissen. In einzelnen Spielen, mit Raytracing oder DLSS/FSR kann der Abstand größer oder kleiner sein.',balken([[a.name+' (jetzt)',a.idx,Math.max(a.idx,n.idx),true],[n.name+' (neu)',n.idx,Math.max(a.idx,n.idx)]]));
+  zaehle('upgrade');
+}
+
+// ================= 2) Spiel =================
+const SP={gpu:gi('RTX 3060 (12 GB)'),cpu:ci('Ryzen 5 5600 / 5600X'),ram:16,minG:gi('GTX 1060 6 GB'),empG:gi('RTX 2070'),minC:-1,empC:-1,ramMin:0,ramEmp:16};
+function spiel(){
+  h(`<h2>Läuft das Spiel auf meinem PC?</h2><p class="hint" style="margin-top:-6px;margin-bottom:12px">Die Anforderungen stehen auf der Steam-Seite des Spiels ganz unten („Mindestanforderungen“ und „Empfohlen“).</p>
+  <div class="step"><b>Dein PC</b></div>
+  <label class="field"><span>Deine Grafikkarte</span><select id="sg">${gpuOpts(SP.gpu)}</select></label>
+  <div class="fields"><label class="field"><span>Dein Prozessor</span><select id="sc">${cpuOpts(SP.cpu,'Weiß ich nicht')}</select></label>
+  <label class="field"><span>Arbeitsspeicher (RAM)</span><select id="sr">${[8,12,16,32,64].map(v=>`<option value="${v}"${v===SP.ram?' selected':''}>${v} GB</option>`).join('')}</select></label></div>
+  <div class="gap"></div>
+  <div class="step"><b>Das Spiel verlangt</b></div>
+  <div class="fields" style="margin-top:4px">
+   <label class="field"><span>Grafikkarte – Minimum</span><select id="smg">${gpuOpts(SP.minG,'Keine Angabe')}</select></label>
+   <label class="field"><span>Grafikkarte – Empfohlen</span><select id="seg">${gpuOpts(SP.empG,'Keine Angabe')}</select></label>
+   <label class="field"><span>Prozessor – Minimum</span><select id="smc">${cpuOpts(SP.minC,'Keine Angabe')}</select></label>
+   <label class="field"><span>Prozessor – Empfohlen</span><select id="sec">${cpuOpts(SP.empC,'Keine Angabe')}</select></label>
+   <label class="field"><span>RAM – Minimum</span><select id="srm">${[0,8,12,16,32].map(v=>`<option value="${v}"${v===SP.ramMin?' selected':''}>${v?v+' GB':'Keine Angabe'}</option>`).join('')}</select></label>
+   <label class="field"><span>RAM – Empfohlen</span><select id="sre">${[0,8,12,16,32].map(v=>`<option value="${v}"${v===SP.ramEmp?' selected':''}>${v?v+' GB':'Keine Angabe'}</option>`).join('')}</select></label>
+  </div>
+  <p class="hint">Steht dort eine Karte, die hier fehlt, nimm die nächstähnliche (gleiche Serie, ähnliche Nummer). Nennt das Spiel zwei Karten (NVIDIA oder AMD), reicht eine.</p>
+  <div id="sres"></div>
+  <p class="hint">GTA 6: Für den PC gibt es noch keine offiziellen Anforderungen (Stand November 2026, bisher nur PS5 und Xbox Series). Alles, was dazu kursiert, sind Schätzungen.</p>`);
+  const bind=(id,key)=>document.getElementById(id).onchange=e=>{SP[key]=+e.target.value;spupd()};
+  bind('sg','gpu');bind('sc','cpu');bind('sr','ram');bind('smg','minG');bind('seg','empG');bind('smc','minC');bind('sec','empC');bind('srm','ramMin');bind('sre','ramEmp');
+  spupd();
+}
+function stufe(mein,min,emp){ // 2 = über Empfohlen, 1 = zwischen, 0 = unter Minimum, -1 = keine Angabe
+  if(emp>0&&mein>=emp*0.95) return 2; if(min>0&&mein<min*0.95) return 0; if(min>0||emp>0) return 1; return -1;
+}
+function spupd(){
+  const g=GPU[SP.gpu], c=SP.cpu>=0?CPU[SP.cpu]:null;
+  const mg=SP.minG>=0?GPU[SP.minG]:null, eg=SP.empG>=0?GPU[SP.empG]:null, mc=SP.minC>=0?CPU[SP.minC]:null, ec=SP.empC>=0?CPU[SP.empC]:null;
+  const sG=stufe(g.idx,mg?mg.idx:0,eg?eg.idx:0);
+  const sC=c?stufe(c.idx,mc?mc.idx:0,ec?ec.idx:0):-1;
+  const sR=stufe(SP.ram,SP.ramMin,SP.ramEmp);
+  const zeile=(s,teil,mein,anf)=>({2:['✅',`${teil}: ${mein} schafft die Empfehlung${anf?' ('+anf+')':''}.`],1:['🟡',`${teil}: ${mein} liegt zwischen Minimum und Empfehlung.`],0:['❌',`${teil}: ${mein} liegt unter dem Minimum${anf?' ('+anf+')':''}.`],[-1]:['➖',`${teil}: keine Angabe zum Vergleich.`]}[s]);
+  const liste=[zeile(sG,'Grafikkarte',g.name,(sG===0?mg:eg)?(sG===0?mg:eg).name:''), zeile(sC,'Prozessor',c?c.name:'unbekannt',(sC===0?mc:ec)?(sC===0?mc:ec).name:''), zeile(sR,'Arbeitsspeicher',SP.ram+' GB',(sR===0?SP.ramMin:SP.ramEmp)?((sR===0?SP.ramMin:SP.ramEmp)+' GB'):'')];
+  const bekannt=[sG,sC,sR].filter(s=>s>=0), schlecht=bekannt.length?Math.min(...bekannt):-1;
+  let cls,say;
+  if(schlecht===-1){cls='';say='Bitte trag die Anforderungen des Spiels ein.';}
+  else if(schlecht===2){cls='ok';say='Ja, das läuft gut – auch auf den empfohlenen Einstellungen.';}
+  else if(schlecht===1){cls='warn';say='Es läuft, aber eher mit mittleren Einstellungen.';}
+  else {cls='bad';say='Eher nicht: Mindestens ein Teil liegt unter dem Minimum.';}
+  const tips=[];
+  if(sG===0) tips.push('Unter dem Minimum startet das Spiel oft trotzdem, ruckelt aber stark. Niedrigste Details, 720p und FSR/DLSS auf „Leistung“ können helfen.');
+  if(sR===0) tips.push('Zu wenig Arbeitsspeicher führt zu Hängern beim Nachladen. RAM aufzurüsten ist meist günstig.');
+  if(eg&&g.vram<eg.vram) tips.push(`Die empfohlene Karte hat ${eg.vram} GB Grafikspeicher, deine ${g.vram} GB – Texturen eine Stufe niedriger wählen.`);
+  tips.push('Die Empfehlung der Hersteller meint meist Full HD mit etwa 60 FPS. Für WQHD oder 4K brauchst du deutlich mehr.');
+  const extra=`<ul class="checks">${liste.map(z=>`<li><span class="i">${z[0]}</span><span>${esc(z[1])}</span></li>`).join('')}</ul>`;
+  const copy=`Spiel-Check: ${liste.map(z=>z[1]).join(' ')} → ${say} (Vergleich mit gemittelten Leistungswerten; die Empfehlung gilt meist für Full HD mit etwa 60 FPS.)`;
+  sres.innerHTML=antwortBox(cls,'Antwort',say,'',tips,copy,'Verglichen wird die Leistung deiner Teile mit den genannten Teilen, nicht nur der Name. Eine neuere, aber schwächere Karte kann unter der Anforderung liegen.',extra);
+  zaehle('spiel');
+}
+
+// ================= 3) Engpass =================
+const E={gpu:gi('RTX 4070'),cpu:ci('Ryzen 5 5600 / 5600X'),aufl:'1440'};
+function engpass(){
+  h(`<h2>Bremst mein Prozessor die Grafikkarte?</h2>
+  <label class="field"><span>1. Deine Grafikkarte (oder die geplante)</span><select id="eg">${gpuOpts(E.gpu)}</select></label>
+  <div class="gap"></div>
+  <label class="field"><span>2. Dein Prozessor</span><select id="ec">${cpuOpts(E.cpu)}</select></label>
+  <div class="gap"></div>
+  <div class="step">3. In welcher Auflösung spielst du?</div>${auflPills('eau',E.aufl)}
+  <div id="eres"></div>`);
+  eg.onchange=()=>{E.gpu=+eg.value;eupd()}; ec.onchange=()=>{E.cpu=+ec.value;eupd()}; pillGroup('eau',v=>{E.aufl=v;eupd()}); eupd();
+}
+function eupd(){
+  const g=GPU[E.gpu], c=CPU[E.cpu], x=engpassWert(g,c,E.aufl), an={'1080':'Full HD','1440':'WQHD','2160':'4K'}[E.aufl];
+  let cls,say,tips;
+  if(x>1.35){cls='bad';say=`Ja, der ${esc(c.name)} bremst die ${esc(g.name)} in ${an} deutlich.`;tips=['Ein stärkerer Prozessor bringt hier mehr als eine noch stärkere Grafikkarte.','Höhere Auflösung oder mehr Details kosten dich dann kaum FPS – die Grafikkarte hat Luft.',c.sockel==='AM4'?'Auf Sockel AM4 ist ein Ryzen 7 5700X3D oder 5800X3D das günstigste große Upgrade – ohne neues Mainboard.':'Prüfe im Bereich „Passen die Teile zusammen?“, welche Prozessoren auf dein Mainboard passen.'];}
+  else if(x>1.0){cls='warn';say=`Etwas: In prozessorlastigen Spielen bremst der ${esc(c.name)} leicht.`;tips=['In Shootern mit hohen FPS, Strategie- und Simulationsspielen merkst du es am ehesten.','In grafiklastigen Spielen ist meist trotzdem die Grafikkarte am Limit – das ist normal und gut.'];}
+  else if(x>0.5){cls='ok';say='Nein, das passt gut zusammen.';tips=['Ein kleiner „Engpass“ ist immer da – irgendein Teil ist immer am Limit. Entscheidend ist, dass keiner das andere stark ausbremst.'];}
+  else {cls='ok';say=`Nein – eher ist die Grafikkarte der Engpass.`;tips=['Dein Prozessor hätte Reserven für eine deutlich stärkere Grafikkarte.','Ein Grafikkarten-Upgrade lohnt sich hier am meisten.'];}
+  const more=`Grafikkarte ${fmt(g.idx)} (RTX 4070 = 100), Prozessor ${fmt(c.idx)} (Ryzen 7 7800X3D = 100). In ${an} muss die Grafikkarte etwa ${fmt(AUFL_F[E.aufl],2).replace(',00','')}-mal so viel arbeiten wie in Full HD.`;
+  const copy=`Engpass-Check: ${g.name} mit ${c.name} in ${an}: ${say.replace(/<[^>]+>/g,'')} (Faustregel aus gemittelten Testwerten; in Full HD bremst der Prozessor eher, in 4K fast nie.)`;
+  eres.innerHTML=antwortBox(cls,'Antwort',say,more,tips,copy,'Faustregel: Je höher die Auflösung, desto mehr muss die Grafikkarte leisten und desto seltener bremst der Prozessor. Gerechnet: Grafikkarten-Index ÷ (Prozessor-Index × Auflösungsfaktor); über 1 bremst der Prozessor.');
+  zaehle('engpass');
+}
+
+// ================= 4) Kompatibilität =================
+const KP={cpu:ci('Ryzen 7 9800X3D'),board:BOARD.findIndex(b=>b.name==='B650 / B650E'),ram:'DDR5',boardRam:'DDR5',gpuLen:0,caseLen:0,kuehl:0,caseKuehl:0};
+function kompatibel(){
+  h(`<h2>Passen die Teile zusammen?</h2>
+  <label class="field"><span>1. Prozessor</span><select id="kc">${cpuOpts(KP.cpu)}</select></label>
+  <div class="gap"></div>
+  <label class="field"><span>2. Mainboard-Chipsatz (steht im Namen, z. B. „MSI B650 Tomahawk“)</span><select id="kb">${boardOpts(KP.board)}</select></label>
+  <div id="kbr" class="hide"><div class="gap"></div><div class="step">Welchen Arbeitsspeicher nimmt dein Board? (steht im Namen oder Datenblatt, oft „DDR4“ im Namen)</div>
+   <div class="pills" id="kbrp">${['DDR4','DDR5'].map(r=>`<button class="pill${r===KP.boardRam?' on':''}" data-v="${r}">${r}</button>`).join('')}</div></div>
+  <div class="gap"></div>
+  <div class="step">3. Arbeitsspeicher</div>
+  <div class="pills" id="kr">${['DDR4','DDR5'].map(r=>`<button class="pill${r===KP.ram?' on':''}" data-v="${r}">${r}</button>`).join('')}</div>
+  <div id="kres"></div>
+  <details class="fine"><summary>Gehäuse prüfen (Länge und Höhe)</summary><div class="fields">
+   <label class="field"><span>Länge der Grafikkarte (mm)</span><input type="number" id="kgl" inputmode="numeric" min="0" placeholder="z. B. 304" value="${KP.gpuLen||''}"></label>
+   <label class="field"><span>Gehäuse: max. Grafikkarte (mm)</span><input type="number" id="kcl" inputmode="numeric" min="0" placeholder="z. B. 330" value="${KP.caseLen||''}"></label>
+   <label class="field"><span>Höhe des CPU-Kühlers (mm)</span><input type="number" id="kkh" inputmode="numeric" min="0" placeholder="z. B. 158" value="${KP.kuehl||''}"></label>
+   <label class="field"><span>Gehäuse: max. Kühlerhöhe (mm)</span><input type="number" id="kch" inputmode="numeric" min="0" placeholder="z. B. 165" value="${KP.caseKuehl||''}"></label>
+  </div><p class="hint">Die Werte stehen im Datenblatt von Grafikkarte, Kühler und Gehäuse.</p></details>`);
+  kc.onchange=()=>{KP.cpu=+kc.value;kupd()}; kb.onchange=()=>{KP.board=+kb.value;kupd()};
+  pillGroup('kr',v=>{KP.ram=v;kupd()}); pillGroup('kbrp',v=>{KP.boardRam=v;kupd()});
+  [['kgl','gpuLen'],['kcl','caseLen'],['kkh','kuehl'],['kch','caseKuehl']].forEach(([id,k])=>document.getElementById(id).addEventListener('input',e=>{KP[k]=num(e.target.value);kupd()}));
+  kupd();
+}
+function biosHinweis(c,b){ // gibt [Stufe, Text] zurück: 0 passt nicht, 1 BIOS-Update nötig, 2 passt
+  const g=c.gen, s=b.serie;
+  if(c.sockel==='AM4'){
+    if(g==='r2'&&(s==='500')) return [0,`Ryzen 2000 wird von ${b.name}-Boards nicht unterstützt.`];
+    if(g==='r5'&&b.name==='A320') return [1,'Ryzen 5000 läuft auf A320 nur bei manchen Boards nach BIOS-Update – Liste der unterstützten Prozessoren (CPU-Support-Liste) des Boards prüfen.'];
+    if(g==='r5'&&(s==='300'||s==='400')) return [1,`Ryzen 5000 braucht auf ${b.name} ein BIOS-Update (meist ab 2021 verfügbar). Ohne Update startet der PC nicht.`];
+    if(g==='r3'&&s==='300') return [1,`Ryzen 3000 braucht auf ${b.name} ein BIOS-Update.`];
+    if(g==='r5'&&s==='500') return [2,`Ältere ${b.name}-Boards von 2020 brauchen eventuell ein BIOS-Update; neuere laufen sofort.`];
+  }
+  if(c.sockel==='AM5'&&g==='r9'&&s==='600') return [1,`Ryzen 9000 braucht auf ${b.name}-Boards ein aktuelles BIOS. Viele Boards können das mit „BIOS Flashback“ ohne Prozessor.`];
+  if(c.sockel==='LGA1700'&&g==='i13'&&s==='600') return [1,`13./14. Generation braucht auf ${b.name}-Boards ein BIOS-Update. Achte beim Kauf auf „13th Gen ready“ oder BIOS Flashback.`];
+  if(c.sockel==='LGA1700'&&g==='i13') return [2,'Für Core i7/i9 der 13./14. Generation das neueste BIOS einspielen (Intel-Mikrocode gegen Instabilität).'];
+  if(c.sockel==='LGA1200'&&g==='i11'&&(b.name==='H410'||b.name==='B460')) return [0,`Die 11. Generation wird von ${b.name} nicht unterstützt.`];
+  if(c.sockel==='LGA1200'&&g==='i11'&&b.name==='Z490') return [1,'Die 11. Generation läuft auf Z490 bei den meisten Boards nach BIOS-Update.'];
+  if(c.sockel==='LGA1151'&&g==='i9') return [2,'9. Generation braucht auf 300er-Boards eventuell ein BIOS-Update.'];
+  return [2,''];
+}
+function kupd(){
+  const c=CPU[KP.cpu], b=KP.board>=0?BOARD[KP.board]:null, out=document.getElementById('kres');
+  document.getElementById('kbr').classList.toggle('hide',!(b&&b.ram==='beides'));
+  if(!b){out.innerHTML='<p class="hint" style="margin-top:16px">Wähle oben den Chipsatz deines Mainboards.</p>';return;}
+  const pts=[]; let schlecht=2;
+  const add=(s,t)=>{pts.push([s,t]);schlecht=Math.min(schlecht,s);};
+  if(c.sockel!==b.sockel) add(0,`Sockel passt nicht: Der ${c.name} braucht Sockel ${c.sockel}, das ${b.name}-Board hat ${b.sockel}.`);
+  else { add(2,`Sockel passt: beide ${c.sockel}.`); const bh=biosHinweis(c,b); if(bh[1]) add(bh[0],bh[1]); }
+  const boardRam=b.ram==='beides'?KP.boardRam:b.ram;
+  if(KP.ram!==boardRam) add(0,`Arbeitsspeicher passt nicht: Das Board nimmt ${boardRam}, du hast ${KP.ram} gewählt. DDR4 und DDR5 sind nicht austauschbar.`);
+  else add(2,`Arbeitsspeicher passt: ${boardRam}.`);
+  if(KP.gpuLen&&KP.caseLen){ if(KP.gpuLen>KP.caseLen) add(0,`Grafikkarte zu lang: ${fmt(KP.gpuLen)} mm, das Gehäuse erlaubt ${fmt(KP.caseLen)} mm.`); else if(KP.caseLen-KP.gpuLen<10) add(1,`Grafikkarte passt knapp (${fmt(KP.caseLen-KP.gpuLen)} mm Luft) – Frontlüfter oder Radiator können im Weg sein.`); else add(2,`Grafikkarte passt ins Gehäuse (${fmt(KP.caseLen-KP.gpuLen)} mm Luft).`);}
+  if(KP.kuehl&&KP.caseKuehl){ if(KP.kuehl>KP.caseKuehl) add(0,`CPU-Kühler zu hoch: ${fmt(KP.kuehl)} mm, das Gehäuse erlaubt ${fmt(KP.caseKuehl)} mm.`); else add(2,`CPU-Kühler passt (${fmt(KP.caseKuehl-KP.kuehl)} mm Luft).`);}
+  const say=schlecht===2?'Ja, das passt zusammen.':schlecht===1?'Passt – bei älteren Boards aber erst nach einem BIOS-Update.':'Nein, das passt so nicht.';
+  const cls=schlecht===2?'ok':schlecht===1?'warn':'bad';
+  const icon={0:'❌',1:'⚠️',2:'✅'};
+  const extra=`<ul class="checks">${pts.map(p=>`<li><span class="i">${icon[p[0]]}</span><span>${esc(p[1])}</span></li>`).join('')}</ul>`;
+  const tips=['Netzteil nicht vergessen: Leistung und Stromstecker der Grafikkarte prüfen (Watt-Helfer, Bereich Netzteil).','Im Zweifel die CPU-Support-Liste auf der Herstellerseite des Mainboards ansehen – dort steht auch die nötige BIOS-Version.'];
+  const copy=`Kompatibilitäts-Check: ${c.name} + ${b.name}-Mainboard + ${KP.ram}: ${say} ${pts.map(p=>p[1]).join(' ')}`;
+  out.innerHTML=antwortBox(cls,'Antwort',say,'',tips,copy,'',extra);
+  zaehle('kompatibel');
+}
+
+// ================= Navigation =================
+const SEITEN={upgrade,spiel,engpass,kompatibel};
+function route(){
+  const t=location.hash.slice(1);
+  document.getElementById('back').classList.toggle('hide',!SEITEN[t]);
+  zaehle(SEITEN[t]?t:'start','aufruf');
+  (SEITEN[t]||start)();
+}
+document.getElementById('home').onclick=()=>{location.hash='';};
+document.getElementById('back').onclick=()=>{location.hash='';};
+window.addEventListener('hashchange',route);
+route();
+</script>
+</body>
+</html>
